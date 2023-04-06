@@ -1,0 +1,13 @@
+name: Run RenovateBot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+#    runs-on:  [self-hosted, ocio, ede]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run
+        run: npm run renovate
