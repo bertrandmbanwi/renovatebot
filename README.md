@@ -5,6 +5,9 @@ Currently, Renovatebot will only manage terraform dependencies and attempt to bu
 
 There is alot of room for improvement like automerging, maybe managing docker or github action versions. These will come tbd
 
+### Openshift Image
+https://git.cdc.gov/cdc-coe-reengineering/openshift-github-action-runner-images/-/tree/main/renovate-bot
+
 ## Configuration Options
 https://docs.renovatebot.com/configuration-option
 
