@@ -5,9 +5,14 @@ on:
 
 jobs:
   renovate:
-    runs-on: ubuntu-latest
-#    runs-on:  [self-hosted, ocio, ede]
+    runs-on:  [self-hosted, renovatebot]
+    environment:
+      name: cdc-coe-botfrey
     steps:
       - uses: actions/checkout@v3
       - name: Run
-        run: npm run renovate
+        run: |
+          echo "Downloading Github App private key..."
+          echo "${{ secrets.CDC_COE_BOTFREY_PEM }}" > app-private-key.pem
+          
+          npm run renovate
