@@ -30,5 +30,5 @@ module.exports = {
     pin: {
         automerge: true
     },
-    repositories: ['cdcent/cdc-coe-emmanuel-test-repo'],
+    repositories: ['cdcent/data-exchange-infra','cdcent/cdc-coe-emmanuel-test-repo'],
 };
