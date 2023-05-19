@@ -4,12 +4,7 @@
   "requiredStatusChecks": null,
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true,
-      "recreateClosed": true
-    },
-    {
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": ["minor","major", "patch", "pin", "digest"],
       "automerge": true,
       "recreateClosed": true
     }
