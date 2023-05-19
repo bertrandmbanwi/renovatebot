@@ -10,7 +10,7 @@
     },
     {
       "matchUpdateTypes": ["major"],
-      "automerge": true,
+      "automerge": false,
       "recreateClosed": true
     }
   ]
