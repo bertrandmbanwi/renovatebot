@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "renovate": "^33.0.0"
+    "renovate": "^34.0.0"
   },
   
   "scripts": {
