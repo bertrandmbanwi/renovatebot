@@ -1,10 +1,13 @@
 {
   "extends": ["config:base"],
+  "automerge": true,
+  "automergeType": "pr",
+  "requiredStatusChecks": null,
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["major", "minor"],
       "automerge": true
     }
-  ],
-  "platformAutomerge": true
+  ]
 }
+
