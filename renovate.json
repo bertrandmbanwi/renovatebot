@@ -1,12 +1,10 @@
 {
   "extends": ["config:base"],
   "automerge": true,
-  "automergeType": "pr",
   "requiredStatusChecks": null,
   "packageRules": [
     {
-      "matchUpdateTypes": ["major", "minor"],
-      "matchPackageNames": ["lodash"],
+      "matchUpdateTypes": ["major", "minor"]
       "automerge": true
     }
   ]
