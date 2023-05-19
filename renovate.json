@@ -7,6 +7,11 @@
       "matchUpdateTypes": ["minor","major", "patch", "pin", "digest"],
       "automerge": true,
       "recreateClosed": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": true,
+      "recreateClosed": true
     }
   ]
 }
