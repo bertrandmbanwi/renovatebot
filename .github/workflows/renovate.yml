@@ -2,6 +2,7 @@ name: Renovate
 
 on:
   # Weekly on Monday at 5:00 AM CT (11:00 UTC)
+  # Adjust the cron to your preferred schedule.
   schedule:
     - cron: "0 11 * * 1"
 
@@ -26,6 +27,9 @@ on:
           - "info"
           - "warn"
 
+permissions:
+  contents: read
+
 jobs:
   renovate:
     name: Run Renovate
@@ -36,11 +40,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ── Option A: GitHub App (recommended for orgs) ──
+      # Uncomment the block below and set ORG_APP_ID
+      # and ORG_APP_PRIVATE_KEY as repo/org secrets.
+      #
+      # - name: Generate GitHub App token
+      #   id: app-token
+      #   uses: actions/create-github-app-token@v2
+      #   with:
+      #     app-id: ${{ vars.ORG_APP_ID }}
+      #     private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+      #     owner: your-org
+
+      # ── Option B: Personal Access Token ──
+      # Simpler setup. Create a PAT with repo + workflow
+      # scopes and store it as RENOVATE_TOKEN.
       - name: Run Renovate
         uses: renovatebot/github-action@v41.0.13
         with:
           configurationFile: config.js
           token: ${{ secrets.RENOVATE_TOKEN }}
+          # For GitHub App auth, replace the line above with:
+          # token: ${{ steps.app-token.outputs.token }}
         env:
           RENOVATE_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
           LOG_LEVEL: ${{ github.event.inputs.log_level || 'info' }}

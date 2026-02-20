@@ -1,10 +1,14 @@
 module.exports = {
   // ──────────────────────────────────────────────
   // Platform & Discovery
+  //
+  // Autodiscover scans all repos accessible to the
+  // token/app and filters by the pattern below.
+  // Change this to match your org or user account.
   // ──────────────────────────────────────────────
   platform: "github",
   autodiscover: true,
-  autodiscoverFilter: ["caelicode/*"],
+  autodiscoverFilter: ["your-org/*"],
 
   // ──────────────────────────────────────────────
   // Git Behavior
@@ -14,7 +18,10 @@ module.exports = {
   requireConfig: "optional",
 
   // ──────────────────────────────────────────────
-  // Dashboard & Labels
+  // Dashboard & Limits
+  //
+  // The dependency dashboard creates a tracking
+  // issue in each repo. PR limits prevent flood.
   // ──────────────────────────────────────────────
   dependencyDashboard: true,
   dependencyDashboardTitle: "Renovate Dependency Dashboard",
@@ -23,31 +30,39 @@ module.exports = {
   prConcurrentLimit: 10,
 
   // ──────────────────────────────────────────────
-  // Schedule — run once a week on Monday mornings
+  // Schedule
+  //
+  // Cron in the workflow triggers the run; this
+  // schedule controls when Renovate creates PRs.
+  // Useful to avoid PRs landing during work hours.
   // ──────────────────────────────────────────────
   schedule: ["before 9am on monday"],
   timezone: "America/Chicago",
 
   // ──────────────────────────────────────────────
   // Enabled Managers
+  //
+  // Each manager detects a specific ecosystem.
+  // Add or remove based on what your org uses.
+  // Full list: https://docs.renovatebot.com/modules/manager/
   // ──────────────────────────────────────────────
   enabledManagers: [
-    "pip_requirements",
-    "pip_setup",
-    "poetry",
-    "npm",
-    "dockerfile",
-    "docker-compose",
-    "github-actions",
-    "terraform",
-    "helmv3",
+    "pip_requirements",  // requirements.txt
+    "pip_setup",         // setup.py / setup.cfg
+    "poetry",            // pyproject.toml (Poetry)
+    "npm",               // package.json
+    "dockerfile",        // Dockerfile FROM directives
+    "docker-compose",    // docker-compose.yml images
+    "github-actions",    // .github/workflows/*.yml
+    "terraform",         // .tf provider/module blocks
+    "helmv3",            // Chart.yaml dependencies
   ],
 
   // ──────────────────────────────────────────────
   // Automerge Strategy
-  //   - Patch & minor: automerge (low risk)
-  //   - Major: PR only, needs manual review
-  //   - Lock file maintenance: automerge
+  //
+  // Low-risk updates merge automatically.
+  // Major bumps always require human review.
   // ──────────────────────────────────────────────
   patch: {
     automerge: true,
@@ -66,17 +81,22 @@ module.exports = {
 
   // ──────────────────────────────────────────────
   // Package Rules — grouping to reduce PR noise
+  //
+  // Without grouping, each dependency gets its own
+  // PR. These rules bundle related updates so you
+  // review one PR per ecosystem per update type.
   // ──────────────────────────────────────────────
   packageRules: [
-    // Group all GitHub Actions updates together
+    // GitHub Actions — automerge, pin to SHA
     {
       matchManagers: ["github-actions"],
       groupName: "github-actions",
       labels: ["ci", "renovate"],
       automerge: true,
+      pinDigests: true,
     },
 
-    // Group all Python minor + patch together per repo
+    // Python minor + patch grouped
     {
       matchManagers: ["pip_requirements", "pip_setup", "poetry"],
       matchUpdateTypes: ["minor", "patch"],
@@ -84,7 +104,7 @@ module.exports = {
       labels: ["dependencies", "renovate"],
     },
 
-    // Group all npm minor + patch together per repo
+    // npm minor + patch grouped
     {
       matchManagers: ["npm"],
       matchUpdateTypes: ["minor", "patch"],
@@ -92,37 +112,34 @@ module.exports = {
       labels: ["dependencies", "renovate"],
     },
 
-    // Group Docker base image updates
+    // Docker base images grouped
     {
       matchManagers: ["dockerfile", "docker-compose"],
       groupName: "docker-images",
       labels: ["infrastructure", "renovate"],
     },
 
-    // Group Terraform provider updates
+    // Terraform providers grouped
     {
       matchManagers: ["terraform"],
       groupName: "terraform-providers",
       labels: ["infrastructure", "renovate"],
     },
 
-    // Group Helm chart updates
+    // Helm charts grouped
     {
       matchManagers: ["helmv3"],
       groupName: "helm-charts",
       labels: ["infrastructure", "renovate"],
     },
-
-    // Pin GitHub Actions to full SHA for security
-    {
-      matchManagers: ["github-actions"],
-      pinDigests: true,
-    },
   ],
 
   // ──────────────────────────────────────────────
-  // Vulnerability Alerts — always create PRs for
-  // known vulnerabilities, regardless of schedule
+  // Vulnerability Alerts
+  //
+  // Security patches always surface as PRs
+  // regardless of schedule, and never automerge
+  // so you can review the advisory first.
   // ──────────────────────────────────────────────
   vulnerabilityAlerts: {
     enabled: true,
@@ -131,7 +148,7 @@ module.exports = {
   },
 
   // ──────────────────────────────────────────────
-  // PR Body — clean, consistent format
+  // PR Template
   // ──────────────────────────────────────────────
   prBodyTemplate:
     "{{{table}}}\n\n{{{warnings}}}\n\n{{{controls}}}\n\n{{{notes}}}",
