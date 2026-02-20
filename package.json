@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "renovate": "^43.0.0"
-  },
-  
-  "scripts": {
-    "renovate": "renovate --token $(./get-github-app-token.sh)"
-  }
-}
